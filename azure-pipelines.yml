@@ -46,8 +46,9 @@ stages:
   - job: Build
     displayName: Build and push Docker image
     steps:
-      - task: Docker@2
-        inputs:
-          containerRegistry: 'DockerHub fkuhlmann'
-          command: 'buildAndPush'
-          Dockerfile: './Dockerfile'
+    - task: Docker@2
+      inputs:
+        containerRegistry: 'DockerHub fkuhlmann'
+        repository: 'FlaskCalculatorAzure'
+        command: 'buildAndPush'
+        Dockerfile: './Dockerfile'
