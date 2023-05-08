@@ -46,9 +46,28 @@ stages:
   - job: Build
     displayName: Build and push Docker image
     steps:
-    - task: Docker@2
+    - task: Docker@1
       inputs:
         containerRegistry: 'DockerHub fkuhlmann'
         repository: 'FlaskCalculatorAzure'
         command: 'buildAndPush'
         Dockerfile: './Dockerfile'
+    - task: Docker@1      
+      inputs:
+        containerregistrytype: 'Container Registry'
+        dockerRegistryEndpoint: 'DockerHub fkuhlmann'
+        command: 'Build an image'
+        dockerFile: './Dockerfile'
+        imageName: '$(ImageName)'
+        useDefaultContext: false
+        buildContext: 'FlaskCalculator'
+      displayName: 'Build the Docker image'
+
+    - task: Docker@1      
+      inputs:
+        containerregistrytype: 'Container Registry'
+        dockerRegistryEndpoint: 'DockerHub fkuhlmann'
+        command: 'Push an image'
+        imageName: '$(ImageName)'
+      condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
+      displayName: 'Push the Docker image to Dockerhub'
