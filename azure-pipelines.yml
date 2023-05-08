@@ -46,13 +46,8 @@ stages:
   - job: Build
     displayName: Build and push Docker image
     steps:
-    - task: Docker@1      
-      inputs:
-        containerregistrytype: 'Container Registry'
-        dockerRegistryEndpoint: 'Docker Hub'
-        command: 'Build an image'
-        dockerFile: './Dockerfile'
-        imageName: '$(ImageName)'
-        useDefaultContext: false
-        buildContext: 'CustomerApi'
-      displayName: 'Build the Docker image'
+      - task: Docker@2
+        inputs:
+          containerRegistry: 'DockerHub fkuhlmann'
+          command: 'buildAndPush'
+          Dockerfile: './Dockerfile'
